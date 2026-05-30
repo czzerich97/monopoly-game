@@ -745,7 +745,7 @@
             
             if (randomGame === 'swipeGame.html') {
                 logInfo(isZh ? "🎯 觸發小遊戲：準備進行「塑戰速決」滑動挑戰！" : "Triggered Game: Prepare for the Swipe Challenge!");
-                const result = await triggerMinigame(player, 'swipeGame.html', 3); 
+                const result = await triggerMinigame(player, 'swipeGame.html', '&limit=3'); 
                 
                 const correctCount = result.score;
                 player.stats.totalQuestions += result.totalPlayed;
@@ -806,11 +806,11 @@
                 let popupMessageCatch = "";
                 
                 if (catchScore > 0) {
-                    const catchMoney = catchScore * 50;
-                    const catchCarbon = catchScore * 10;
+                    const catchMoney = catchScore ;
+                    const catchCarbon = catchScore/10 ;
                     player.money += catchMoney;
                     applyCarbonEffect(player, -catchCarbon);
-                    logInfo(isZh ? `🎉 挑戰結束！成功接住 ${catchScore} 個永續物件，獲得 $${catchMoney} 並減少 ${catchCarbon} CO₂！` : `Challenge over! Caught ${catchScore} items. Earned $${catchMoney} & -${catchCarbon} CO₂!`);
+                    logInfo(isZh ? `🎉 挑戰結束！成功接住 ${catchScore/10} 個永續物件，獲得 $${catchMoney} 並減少 ${catchCarbon} CO₂！` : `Challenge over! Caught ${catchScore} items. Earned $${catchMoney} & -${catchCarbon} CO₂!`);
                     popupMessageCatch = isZh
                       ? `🎉 挑戰結束！成功接住 ${catchScore} 個永續物件\n獲得 $${catchMoney} 並減少 ${catchCarbon} CO₂！\n(碳排變更: -${catchCarbon} CO₂)`
                       : `🎉 Challenge over! Caught ${catchScore} items\nEarned $${catchMoney} & -${catchCarbon} CO₂!\n(Carbon change: -${catchCarbon} CO₂)`;

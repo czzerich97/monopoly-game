@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESG Catch Game</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0; overflow: hidden; font-family: -apple-system, sans-serif; background: #0f2027; color: white; display:flex; justify-content:center; align-items:center; }
+  #canvas-container { position: relative; width: 100vw; height: 100vh; max-width: 600px; background: linear-gradient(135deg, #0f2027, #2c5364); }
+  canvas { display: block; width: 100%; height: 100%; }
+  
+  #ui-layer { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; z-index: 5; pointer-events: none; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+  
+  .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 10; padding: 20px; text-align: center; backdrop-filter: blur(4px); }
+  .dialog { background: white; color: #333; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 350px; width: 100%; border: 1px solid rgba(0,0,0,0.1); }
+  .dialog h2 { margin-top: 0; color: #0E63E6; margin-bottom: 15px; font-size: 24px;}
+  .dialog p { margin-bottom: 20px; line-height: 1.5; font-size: 16px; color: #555;}
+  
+  .btn { background: linear-gradient(135deg, #0E63E6, #0A47A1); color: white; border: none; padding: 14px 24px; font-size: 18px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; transition: filter 0.2s; box-shadow: 0 4px 12px rgba(14,99,230,0.3);}
+  .btn:hover { filter: brightness(1.1); }
+</style>
+</head>
+<body>
+<div id="canvas-container">
+  <div id="ui-layer">
+    <span id="score-display">得分: 0</span>
+    <span id="time-display">時間: 20s</span>
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  
+  <div id="startOverlay" class="overlay">
+    <div class="dialog">
+      <h2 id="startTitle">🌱 ESG 接物挑戰</h2>
+      <p id="startDesc">滑動下方接取環保元素(🌱, 💧, ♻️)加分，<br><br>避開污染元素(🌫️, 🗑️, 🛢️)扣分！</p>
+      <button id="startBtn" class="btn">開始遊戲</button>
+    </div>
+  </div>
+  
+  <div id="endOverlay" class="overlay" style="display:none;">
+    <div class="dialog">
+      <h2 id="endTitle">時間到！</h2>
+      <p id="endDesc" style="font-size: 26px; font-weight: bold; color:#1f2937;">得分: 0</p>
+      <button id="closeBtn" class="btn">返回大富翁</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- 語言與初始化 ---
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentLang = urlParams.get('lang') || 'zh';
+  const isZh = (currentLang === 'zh');
+  
+  document.getElementById('startTitle').textContent = isZh ? "🌱 ESG 接物挑戰" : "🌱 ESG Catch Game";
+  document.getElementById('startDesc').innerHTML = isZh 
+      ? "滑動下方接取環保元素(🌱,💧,♻️)加分，<br><br>避開污染元素(🌫️,🗑️,🛢️)扣分！"
+      : "Catch green items(🌱,💧,♻️) for +10 pts,<br><br>Avoid pollution(🌫️,🗑️,🛢️) for -10 pts!";
+  document.getElementById('startBtn').textContent = isZh ? "開始遊戲" : "Start Game";
+  document.getElementById('endTitle').textContent = isZh ? "時間到！" : "Time's up!";
+  document.getElementById('closeBtn').textContent = isZh ? "返回大富翁" : "Return to Monopoly";
+  document.getElementById('score-display').textContent = isZh ? "得分: 0" : "Score: 0";
+  // 修正：初始顯示 20s
+  document.getElementById('time-display').textContent = isZh ? "時間: 20s" : "Time: 20s";
+
+  // --- 遊戲核心 ---
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = canvas.parentElement.clientWidth; H = canvas.height = canvas.parentElement.clientHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let score = 0; 
+  let time = 20; // 修正：初始變數改為 20
+  let isPlaying = false; 
+  let items = [];
+  let playerX = W / 2; const playerW = 80, playerH = 20;
+
+  const goodEmojis = ['🌱', '💧', '♻️'];
+  const badEmojis = ['🌫️', '🗑️', '🛢️'];
+
+  // 控制器
+  canvas.addEventListener('mousemove', e => { const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left; });
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); const rect = canvas.getBoundingClientRect(); playerX = e.touches[0].clientX - rect.left; }, {passive: false});
+
+  function spawnItem() {
+    const isGood = Math.random() < 0.6;
+    const emojiArr = isGood ? goodEmojis : badEmojis;
+    items.push({
+      x: Math.random() * (W - 40) + 20, y: -30, speed: Math.random() * 3 + 2.5,
+      isGood: isGood, emoji: emojiArr[Math.floor(Math.random() * emojiArr.length)]
+    });
+  }
+
+  let spawnTimer = 0; let mainTimer = null;
+
+  function loop() {
+    if (!isPlaying) return;
+    ctx.clearRect(0, 0, W, H);
+
+    // 畫籃子 (玩家)
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath(); ctx.roundRect(playerX - playerW/2, H - playerH - 30, playerW, playerH, 10); ctx.fill();
+
+    ctx.font = "34px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+
+    for (let i = items.length - 1; i >= 0; i--) {
+      let item = items[i];
+      item.y += item.speed;
+      ctx.fillText(item.emoji, item.x, item.y);
+
+      // 碰撞偵測
+      if (item.y > H - playerH - 40 && item.y < H - 20 && Math.abs(item.x - playerX) < playerW/2 + 20) {
+        score += item.isGood ? 10 : -10;
+        document.getElementById('score-display').textContent = (isZh ? '得分: ' : 'Score: ') + score;
+        items.splice(i, 1);
+        continue;
+      }
+      if (item.y > H + 40) items.splice(i, 1);
+    }
+
+    spawnTimer++;
+    if (spawnTimer > 35) { spawnItem(); spawnTimer = 0; }
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('startBtn').addEventListener('click', () => {
+    document.getElementById('startOverlay').style.display = 'none';
+    isPlaying = true; 
+    score = 0; 
+    time = 20; // 修正：每次重新開始時重置為 20 秒
+    items = [];
+    document.getElementById('score-display').textContent = (isZh ? '得分: ' : 'Score: ') + score;
+    document.getElementById('time-display').textContent = (isZh ? '時間: ' : 'Time: ') + time + 's';
+    
+    mainTimer = setInterval(() => {
+      time--;
+      document.getElementById('time-display').textContent = (isZh ? '時間: ' : 'Time: ') + time + 's';
+      if(time <= 0) {
+        isPlaying = false; clearInterval(mainTimer);
+        document.getElementById('endOverlay').style.display = 'flex';
+        document.getElementById('endDesc').textContent = (isZh ? '得分: ' : 'Score: ') + score;
+      }
+    }, 1000);
+    loop();
+  });
+
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    // 透過 postMessage 將分數傳回大富翁
+    window.parent.postMessage({ type: 'CATCH_GAME_FINISHED', score: score }, '*');
+  });
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>碳權大富翁：永續行動力</title>
+    <title>碳權大富翁：永續行動力 (PVE版)</title>
     <script src="questions.js"></script>
     <style>
         /* 電腦版骰子預設大小 */
@@ -123,7 +123,6 @@
         .modal-content { padding: 25px; text-align: center; display: flex; flex-direction: column; max-height: 85vh; }
         .modal-content h3 { margin-top: 0; color: #2e7d32; font-size: 24px; flex-shrink: 0; }
         
-        /* 💡 電腦版預設彈窗訊息區塊：多加上內部獨立滾動防護，避免特殊長文本炸開 */
         #modal-message { font-size: 18px; margin-bottom: 20px; min-height: 40px; line-height: 1.6; overflow-y: auto; max-height: 50vh; }
         #modal-message::-webkit-scrollbar { width: 4px; }
         #modal-message::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
@@ -152,194 +151,41 @@
             width: 100%; height: 100%; border: none; background: transparent;
         }
 
-        /* =========================================
-           💡 橫向螢幕手機版：全自動地圖、面板、棋子與「字體」全面縮放配置
-           ========================================= */
         @media (max-width: 1024px) and (orientation: landscape), (max-height: 760px) and (orientation: landscape) {
-            html {
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-                width: 100vw;
-                height: 100vh;
-            }
-            body {
-                display: flex;
-                flex-direction: row; 
-                justify-content: center;
-                align-items: center;
-                gap: 1.5vh; 
-                background-color: #f0f7f0;
-                margin: 0;
-                padding: 5px;
-                box-sizing: border-box;
-                min-height: 100vh;
-            }
-
-            #game-container {
-                width: 86vh !important;  
-                height: 86vh !important;
-                display: block;
-            }
-
-            #board {
-                width: 100% !important;
-                height: 100% !important;
-                grid-template-columns: repeat(10, 10%) !important;
-                grid-template-rows: repeat(10, 10%) !important;
-            }
-
-            .cell {
-                width: 100% !important;
-                height: 100% !important;
-            }
-
-            .cell-header {
-                font-size: 1.3vh !important;
-                padding: 0.3vh !important;
-            }
-            .cell-footer {
-                font-size: 1.4vh !important;
-                height: 2vh !important;
-                line-height: 2vh !important;
-            }
-
-            .center-cell {
-                top: 10% !important;
-                left: 10% !important;
-                width: 80% !important;
-                height: 80% !important;
-            }
-
-            #info-box {
-                width: 50% !important;   
-                height: 55% !important;
-                font-size: 1.8vh !important; 
-                padding: 2vh !important;
-            }
-
-            .ui-panel {
-                width: 28vh !important;  
-                height: 86vh !important;
-                gap: 1vh !important;
-                justify-content: center;
-                box-sizing: border-box;
-            }
-
-            .ui-widget {
-                padding: 1vh 1.2vh !important;
-                width: 100% !important;  
-                box-sizing: border-box;
-            }
-
-            .player-stats {
-                width: 100% !important;
-                height: 28vh !important; 
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important; 
-                box-sizing: border-box !important;
-                padding: 1.2vh !important; 
-            }
-
-            .player-stats h3 { 
-                font-size: 2vh !important; 
-                margin: 0 !important; 
-                padding-bottom: 0.5vh !important;
-                border-bottom: 2px solid #eee;
-                text-align: center;
-                width: 100%;
-            }
-
-            .stat { 
-                font-size: 1.8vh !important; 
-                margin: 0 !important; 
-                width: 100%;
-                display: flex !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-            }
-
-            .carbon-bar-container { 
-                width: 100% !important;
-                height: 2vh !important; 
-                margin: 0 !important; 
-            }
-
-            .turn-widget, .controls {
-                width: 100% !important; 
-            }
-
+            html { overflow-x: hidden !important; overflow-y: auto !important; width: 100vw; height: 100vh; }
+            body { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 1.5vh; background-color: #f0f7f0; margin: 0; padding: 5px; box-sizing: border-box; min-height: 100vh; }
+            #game-container { width: 86vh !important; height: 86vh !important; display: block; }
+            #board { width: 100% !important; height: 100% !important; grid-template-columns: repeat(10, 10%) !important; grid-template-rows: repeat(10, 10%) !important; }
+            .cell { width: 100% !important; height: 100% !important; }
+            .cell-header { font-size: 1.3vh !important; padding: 0.3vh !important; }
+            .cell-footer { font-size: 1.4vh !important; height: 2vh !important; line-height: 2vh !important; }
+            .center-cell { top: 10% !important; left: 10% !important; width: 80% !important; height: 80% !important; }
+            #info-box { width: 50% !important; height: 55% !important; font-size: 1.8vh !important; padding: 2vh !important; }
+            .ui-panel { width: 28vh !important; height: 86vh !important; gap: 1vh !important; justify-content: center; box-sizing: border-box; }
+            .ui-widget { padding: 1vh 1.2vh !important; width: 100% !important; box-sizing: border-box; }
+            .player-stats { width: 100% !important; height: 28vh !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; box-sizing: border-box !important; padding: 1.2vh !important; }
+            .player-stats h3 { font-size: 2vh !important; margin: 0 !important; padding-bottom: 0.5vh !important; border-bottom: 2px solid #eee; text-align: center; width: 100%; }
+            .stat { font-size: 1.8vh !important; margin: 0 !important; width: 100%; display: flex !important; justify-content: space-between !important; align-items: center !important; }
+            .carbon-bar-container { width: 100% !important; height: 2vh !important; margin: 0 !important; }
+            .turn-widget, .controls { width: 100% !important; }
             .turn-indicator { font-size: 2vh !important; }
             .player-stats h3 { font-size: 1.9vh !important; margin-top: 0 !important; margin-bottom: 0.8vh !important; padding-bottom: 0.3vh !important; }
             .stat { font-size: 1.7vh !important; margin: 0.6vh 0 !important; }
             .carbon-bar-container { height: 1.6vh !important; margin-top: 0.3vh !important; }
             .roll-button { padding: 1vh 0 !important; font-size: 1.8vh !important; width: 100% !important; }
             .dice-display { font-size: 2vh !important; height: 3.5vh !important; margin-top: 0.3vh !important; }
-            
-            .player {
-                width: 2.6vh !important;
-                height: 2.6vh !important;
-                border-width: 0.3vh !important;
-            }
+            .player { width: 2.6vh !important; height: 2.6vh !important; border-width: 0.3vh !important; }
             .player.p-0 { bottom: 0.5vh !important; left: 0.5vh !important; }
             .player.p-1 { bottom: 0.5vh !important; right: 0.5vh !important; }
-
-            .dice-icon {
-                font-size: 4.5vh !important; 
-            }
-            .dice-total {
-                font-size: 2.5vh !important; 
-            }
-            .dice-display > div {
-                gap: 1.2vh !important; 
-            }
-
-            /* =========================================
-               💡 頂級高顏值 RWD 改法：優化縮放係數與最大高度安全閥
-               ========================================= */
-            #modal {
-                width: 500px !important;
-                max-width: 90vw !important;
-                /* 依照手機螢幕高度動態等比縮放，確保在任何手機橫屏下都能完全呈現 */
-                transform: translate(-50%, -50%) scale(calc(min(88vh, 480px) / 520)) !important;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
-                height: auto !important;
-                max-height: none !important;
-            }
-            .modal-content {
-                padding: 25px !important;
-                height: auto !important;
-                max-height: 520px !important; /* 與縮放基數對齊 */
-                display: flex !important;
-                flex-direction: column !important;
-                box-sizing: border-box !important;
-            }
-            .modal-content h3 {
-                font-size: 24px !important; 
-                margin-bottom: 12px !important;
-                border-bottom: 2px solid #eee !important;
-                padding-bottom: 10px !important;
-            }
-            /* 💡 核心安全閥：當文字（如學習報告的錯題本）太長時，在內文區塊生成精美小滾動條，按鈕永遠不會被擠走 */
-            #modal-message {
-                font-size: 18px !important; 
-                max-height: 250px !important; /* 限制內文的最大長度空間 */
-                overflow-y: auto !important;   /* 超出時自動生成垂直滾動條 */
-                text-align: left !important;  /* 報告與錯題本靠左對齊更易閱讀 */
-                line-height: 1.6 !important;
-                margin-bottom: 15px !important;
-                padding-right: 5px;
-            }
-            #modal-buttons {
-                gap: 10px !important;
-                max-height: none !important;
-                overflow-y: visible !important;
-            }
-            .modal-btn {
-                padding: 12px !important; 
-                font-size: 16px !important;
-                border-radius: 8px !important;
-            }
+            .dice-icon { font-size: 4.5vh !important; }
+            .dice-total { font-size: 2.5vh !important; }
+            .dice-display > div { gap: 1.2vh !important; }
+            #modal { width: 500px !important; max-width: 90vw !important; transform: translate(-50%, -50%) scale(calc(min(88vh, 480px) / 520)) !important; box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important; height: auto !important; max-height: none !important; }
+            .modal-content { padding: 25px !important; height: auto !important; max-height: 520px !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; }
+            .modal-content h3 { font-size: 24px !important; margin-bottom: 12px !important; border-bottom: 2px solid #eee !important; padding-bottom: 10px !important; }
+            #modal-message { font-size: 18px !important; max-height: 250px !important; overflow-y: auto !important; text-align: left !important; line-height: 1.6 !important; margin-bottom: 15px !important; padding-right: 5px; }
+            #modal-buttons { gap: 10px !important; max-height: none !important; overflow-y: visible !important; }
+            .modal-btn { padding: 12px !important; font-size: 16px !important; border-radius: 8px !important; }
         }
     </style>
 </head>
@@ -413,15 +259,15 @@
 
     <div id="ui-panel-1" class="ui-panel">
         <div class="ui-widget turn-widget" style="border-top: 5px solid var(--player2-color);">
-            <div id="turn-indicator-1" class="turn-indicator">玩家 2</div>
+            <div id="turn-indicator-1" class="turn-indicator">玩家 2 (宏全)</div>
         </div>
         <div class="ui-widget player-stats">
-            <h3 class="status-title">玩家 2 狀態</h3>
+            <h3 class="status-title">玩家 2 (宏全) 狀態</h3>
             <div class="stat"><span class="money-label">💰 金錢:</span> <span id="money-display-1" class="money-display">$1000</span></div>
             <div class="stat"><span class="carbon-label">🏭 碳排:</span> <span id="carbon-display-1" class="carbon-display">0 / 100 CO₂</span></div>
             <div class="carbon-bar-container"><div id="carbon-bar-fill-1" class="carbon-bar-fill"></div></div>
         </div>
-        <div class="ui-widget controls">
+        <div class="ui-widget controls" style="display: none;">
             <button id="roll-button-1" class="roll-button">擲骰子</button>
             <div id="dice-display-1" class="dice-display"></div>
         </div>
@@ -531,12 +377,16 @@
           const turnIndicator = document.getElementById(`turn-indicator-${p.id}`);
 
           if (p.id === currentPlayerIndex) {
-              rollBtn.disabled = false;
+              if (p.id === 0) rollBtn.disabled = false;
               panel.style.opacity = "1";
-              turnIndicator.textContent = currentLang === 'zh' ? `🎲 輪到 玩家 ${p.id + 1}` : `🎲 Player ${p.id + 1}'s turn`;
+              if (p.id === 0) {
+                  turnIndicator.textContent = currentLang === 'zh' ? `🎲 輪到 玩家 1` : `🎲 Player 1's turn`;
+              } else {
+                  turnIndicator.textContent = currentLang === 'zh' ? `🤖 輪到 宏全` : `🤖 Computer's turn`;
+              }
               turnIndicator.style.color = p.tokenColor;
           } else {
-              rollBtn.disabled = true;
+              if (p.id === 0) rollBtn.disabled = true;
               panel.style.opacity = "0.6"; 
               turnIndicator.textContent = currentLang === 'zh' ? `等待中...` : `Waiting...`;
               turnIndicator.style.color = "#888";
@@ -569,8 +419,15 @@
         document.getElementById('report-button').textContent = lang === 'zh' ? "學習報告" : "Report";
         document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '中';
         
+        document.getElementById('turn-indicator-0').textContent = lang === 'zh' ? "玩家 1" : "Player 1";
+        document.getElementById('turn-indicator-1').textContent = lang === 'zh' ? "玩家 2 (宏全)" : "Player 2 (AI)";
+        
         document.querySelectorAll('.status-title').forEach((el, index) => {
-            el.textContent = lang === 'zh' ? `玩家 ${index + 1} 狀態` : `Player ${index + 1} Stats`;
+            if (index === 0) {
+                el.textContent = lang === 'zh' ? `玩家 1 狀態` : `Player 1 Stats`;
+            } else {
+                el.textContent = lang === 'zh' ? `玩家 2 (宏全) 狀態` : `Player 2 (AI) Stats`;
+            }
         });
         document.querySelectorAll('.money-label').forEach(el => el.textContent = lang === 'zh' ? "💰 金錢:" : "💰 Money:");
         document.querySelectorAll('.carbon-label').forEach(el => el.textContent = lang === 'zh' ? "🏭 碳排:" : "🏭 Carbon:");
@@ -632,7 +489,6 @@
           document.getElementById('modal-title').textContent = title;
           document.getElementById('modal-message').innerHTML = message.replace(/\n/g, '<br>');
           
-          // 💡 重置滾動條至頂部
           document.getElementById('modal-message').scrollTop = 0;
 
           const modalButtons = document.getElementById('modal-buttons');
@@ -678,26 +534,40 @@
           });
       }
 
+      async function checkAndTriggerAI() {
+        if (currentPlayerIndex === 1) {
+          await new Promise(r => setTimeout(r, 1500));
+          await rollDice();
+        }
+      }
+
       async function rollDice() {
         const player = players[currentPlayerIndex];
-        document.getElementById(`roll-button-${player.id}`).disabled = true;
+        const isAI = (player.id === 1);
+        if (!isAI) document.getElementById(`roll-button-${player.id}`).disabled = true;
 
         if (player.isInJail) {
-          logInfo(currentLang === 'zh' ? `你正在「環評審查」中...` : `You are in EIA Review...`);
+          logInfo(currentLang === 'zh' ? (isAI ? `🤖 宏全正在「環評審查」中...` : `你正在「環評審查」中...`) : `In EIA Review...`);
           if (player.money >= JAIL_FEE) {
-            const decision = await showModal(
-              currentLang === 'zh' ? "⛓ 環評審查" : "⛓ EIA Review",
-              currentLang === 'zh' ? `支付 $${JAIL_FEE} 並回答問題來離開？` : `Pay $${JAIL_FEE} and answer a quiz to leave?`,
-              [{ text: currentLang === 'zh' ? `支付 $${JAIL_FEE}` : `Pay $${JAIL_FEE}`, value: 'pay', cssClass: 'primary' }, { text: currentLang === 'zh' ? "繼續留下" : "Stay", value: 'stay' }]
-            );
-            if (decision === 'pay') {
-              const isCorrect = await askQuiz(player);
-              if (isCorrect) {
-                player.money -= JAIL_FEE;
-                player.isInJail = false;
-                logInfo(currentLang === 'zh' ? `成功支付罰款！` : `Fine paid successfully!`);
-              } else {
-                logInfo(currentLang === 'zh' ? "回答錯誤！繼續拘留。" : "Wrong answer! Stay in EIA.");
+            if (isAI) {
+              player.money -= JAIL_FEE;
+              player.isInJail = false;
+              logInfo(currentLang === 'zh' ? `🤖 宏全自動支付罰款 $${JAIL_FEE} 離開環評審查。` : `AI paid fine to leave EIA.`);
+            } else {
+              const decision = await showModal(
+                currentLang === 'zh' ? "⛓ 環評審查" : "⛓ EIA Review",
+                currentLang === 'zh' ? `支付 $${JAIL_FEE} 並回答問題來離開？` : `Pay $${JAIL_FEE} and answer a quiz to leave?`,
+                [{ text: currentLang === 'zh' ? `支付 $${JAIL_FEE}` : `Pay $${JAIL_FEE}`, value: 'pay', cssClass: 'primary' }, { text: currentLang === 'zh' ? "繼續留下" : "Stay", value: 'stay' }]
+              );
+              if (decision === 'pay') {
+                const isCorrect = await askQuiz(player);
+                if (isCorrect) {
+                  player.money -= JAIL_FEE;
+                  player.isInJail = false;
+                  logInfo(currentLang === 'zh' ? `成功支付罰款！` : `Fine paid successfully!`);
+                } else {
+                  logInfo(currentLang === 'zh' ? "回答錯誤！繼續拘留。" : "Wrong answer! Stay in EIA.");
+                }
               }
             }
           } else { logInfo(currentLang === 'zh' ? `金錢不足。` : `Not enough money.`); }
@@ -712,19 +582,21 @@
         const face1 = diceFaces[dice1 - 1];
         const face2 = diceFaces[dice2 - 1];
 
-        const diceDisplay = document.getElementById(`dice-display-${player.id}`);
+        const displayTargetId = `dice-display-0`;
+        const diceDisplay = document.getElementById(displayTargetId);
         diceDisplay.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
             <span class="dice-icon" style="line-height: 1;">${face1} ${face2}</span>
             <span class="dice-total">${roll}</span>
         </div>`;
         
-        logInfo(currentLang === 'zh' ? `[玩家 ${player.id + 1}] 擲出了 ${face1} ${face2}，共移動 ${roll} 步。` : `[Player ${player.id + 1}] rolled ${face1} ${face2}, moving ${roll} steps.`);
+        const pName = isAI ? "🤖 宏全" : `[玩家 1]`;
+        logInfo(currentLang === 'zh' ? `${pName} 擲出了 ${face1} ${face2}，共移動 ${roll} 步。` : `${pName} rolled ${face1} ${face2}, moving ${roll} steps.`);
 
         const oldPos = player.position;
         player.position = (oldPos + roll) % boardPath.length;
         if (player.position < oldPos) {
            player.money += 200; applyCarbonEffect(player, 5);
-           logInfo(currentLang === 'zh' ? `經過起點，領取 $200。` : `Passed Start, collect $200.`);
+           logInfo(currentLang === 'zh' ? `${pName} 經過起點，領取 $200。` : `Passed Start, collect $200.`);
         }
         
         movePlayerToken(player.id, player.position);
@@ -739,97 +611,118 @@
       function applyCarbonEffect(player, carbonEffect) {
         if (carbonEffect !== 0) {
            player.carbon = Math.max(0, player.carbon + carbonEffect);
-           logInfo(currentLang === 'zh' ? `碳排變更: ${carbonEffect > 0 ? '+'+carbonEffect : carbonEffect} CO₂` : `Carbon change: ${carbonEffect > 0 ? '+'+carbonEffect : carbonEffect} CO₂`);
+           const pName = player.id === 1 ? "🤖 宏全" : "玩家 1";
+           logInfo(currentLang === 'zh' ? `${pName} 碳排變更: ${carbonEffect > 0 ? '+'+carbonEffect : carbonEffect} CO₂` : `Carbon change: ${carbonEffect > 0 ? '+'+carbonEffect : carbonEffect} CO₂`);
         }
       }
 
       async function handleLandOnCell(player, cell) {
-        logInfo(currentLang === 'zh' ? `踩到了 [${cell.name}]。` : `Landed on [${cell.nameEn || cell.name}].`);
+        const isAI = (player.id === 1);
+        const pName = isAI ? "🤖 宏全" : "玩家 1";
+        logInfo(currentLang === 'zh' ? `${pName} 踩到了 [${cell.name}]。` : `Landed on [${cell.nameEn || cell.name}].`);
         
         if (cell.type === 'chance' || cell.type === 'fate') {
             const isZh = (currentLang === 'zh');
-            const games = ['swipeGame.html', 'memoryGame.html', 'catchGame.html'];
-            const randomGame = games[Math.floor(Math.random() * games.length)];
             
-            if (randomGame === 'swipeGame.html') {
-                logInfo(isZh ? "🎯 觸發小遊戲：準備進行「塑戰速決」滑動挑戰！" : "Triggered Game: Prepare for the Swipe Challenge!");
-                const result = await triggerMinigame(player, 'swipeGame.html', '&limit=3'); 
-                
-                const correctCount = result.score;
-                player.stats.totalQuestions += result.totalPlayed;
-                player.stats.correctCount += correctCount;
-                if (result.mistakes && result.mistakes.length > 0) {
-                    player.stats.mistakes.push(...result.mistakes);
-                }
-
-                let popupTitle = isZh ? "🎯 挑戰結算" : "🎯 Challenge Result";
+            if (isAI) {
+                const isGoodLuck = Math.random() < 0.5;
+                let popupTitle = isZh ? `🤖 宏全觸發${cell.name}` : `🤖 AI triggered ${cell.nameEn || cell.name}`;
                 let popupMessage = "";
-
-                if (correctCount > 0) {
-                    const bonusMoney = correctCount * 50;
-                    const bonusCarbon = correctCount * 10;
-                    player.money += bonusMoney;
-                    applyCarbonEffect(player, -bonusCarbon);
-                    logInfo(isZh ? `🎉 挑戰結束！答對 ${correctCount} 題，獲得 $${bonusMoney} 並減少 ${bonusCarbon} CO₂！` : `Challenge over! Got ${correctCount} right. Earned $${bonusMoney} & -${bonusCarbon} CO₂!`);
+                
+                if (isGoodLuck) {
+                    player.money += 100;
+                    applyCarbonEffect(player, -20);
                     popupMessage = isZh 
-                      ? `🎉 挑戰結束！答對 ${correctCount} 題\n獲得 $${bonusMoney} 並減少 ${bonusCarbon} CO₂！\n(碳排變更: -${bonusCarbon} CO₂)`
-                      : `🎉 Challenge over! Got ${correctCount} right\nEarned $${bonusMoney} & -${bonusCarbon} CO₂!\n(Carbon change: -${bonusCarbon} CO₂)`;
+                      ? `🤖 宏全運氣真好！\n獲得獎勵：金錢 +$100，且成功減少 20 CO₂ 碳排！`
+                      : `🤖 AI got Good Luck!\nReward: +$100 & -20 CO₂!`;
                 } else {
-                    applyCarbonEffect(player, 15);
-                    logInfo(isZh ? "💀 挑戰失敗！一題都沒答對，遭罰增加 15 CO₂ 碳排！" : "Challenge failed! +15 CO₂ penalty!");
-                    popupMessage = isZh
-                      ? `💀 挑戰失敗！一題都沒答對\n遭罰增加 15 CO₂ 碳排！\n(碳排變更: +15 CO₂)`
-                      : `💀 Challenge failed! 0 correct\n+15 CO₂ penalty!\n(Carbon change: +15 CO₂)`;
+                    player.money = Math.max(0, player.money - 100);
+                    applyCarbonEffect(player, 20);
+                    popupMessage = isZh 
+                      ? `💀 宏全運氣不佳！\n遭遇懲罰：扣除金錢 -$100，且增加 20 CO₂ 碳排！`
+                      : `💀 AI got Bad Luck!\nPenalty: -$100 & +20 CO₂!`;
                 }
-                await showModal(popupTitle, popupMessage, [{ text: isZh ? "確認" : "OK", value: 'ok', cssClass: 'primary' }]);
+                await showModal(popupTitle, popupMessage, [{ text: isZh ? "知道了" : "OK", value: 'ok', cssClass: 'primary' }]);
+            } else {
+                const games = ['swipeGame.html', 'memoryGame.html', 'catchGame.html'];
+                const randomGame = games[Math.floor(Math.random() * games.length)];
                 
-            } else if (randomGame === 'memoryGame.html') {
-                logInfo(isZh ? "🌟 觸發小遊戲：準備進行「永續記憶卡」配對挑戰！" : "Triggered Game: Prepare for the Memory Match Challenge!");
-                const randomStageIdx = Math.floor(Math.random() * 4);
-                const memResult = await triggerMinigame(player, 'memoryGame.html', `&stage=${randomStageIdx}`);
-                
-                const matchedPairs = memResult.matched;
-                const memMoneyBonus = matchedPairs * 20;
-                const memCarbonReduction = matchedPairs * 5;
-                
-                player.money += memMoneyBonus;
-                applyCarbonEffect(player, -memCarbonReduction);
-                
-                let popupTitleMem = isZh ? "🌟 記憶挑戰結算" : "🌟 Memory Challenge Result";
-                let popupMessageMem = isZh 
-                  ? `🎉 挑戰結束！成功配對 ${matchedPairs} 組\n獲得 $${memMoneyBonus} 並減少 ${memCarbonReduction} CO₂！\n(碳排變更: -${memCarbonReduction} CO₂)`
-                  : `🎉 Challenge over! Matched ${matchedPairs} pairs\nEarned $${memMoneyBonus} & -${memCarbonReduction} CO₂!\n(Carbon change: -${memCarbonReduction} CO₂)`;
-                
-                if (memResult.retention > 0) {
-                   popupMessageMem += isZh ? `\n\n📊 記憶留存度：${memResult.retention} 分` : `\n\n📊 Retention Score: ${memResult.retention}`;
+                if (randomGame === 'swipeGame.html') {
+                    logInfo(isZh ? "🎯 觸發小遊戲：準備進行「塑戰速決」滑動挑戰！" : "Triggered Game: Prepare for the Swipe Challenge!");
+                    const result = await triggerMinigame(player, 'swipeGame.html', '&limit=3'); 
+                    
+                    const correctCount = result.score;
+                    player.stats.totalQuestions += result.totalPlayed;
+                    player.stats.correctCount += correctCount;
+                    if (result.mistakes && result.mistakes.length > 0) {
+                        player.stats.mistakes.push(...result.mistakes);
+                    }
+
+                    let popupTitle = isZh ? "🎯 挑戰結算" : "🎯 Challenge Result";
+                    let popupMessage = "";
+
+                    if (correctCount > 0) {
+                        const bonusMoney = correctCount * 50;
+                        const bonusCarbon = correctCount * 10;
+                        player.money += bonusMoney;
+                        applyCarbonEffect(player, -bonusCarbon);
+                        popupMessage = isZh 
+                          ? `🎉 挑戰結束！答對 ${correctCount} 題\n獲得 $${bonusMoney} 並減少 ${bonusCarbon} CO₂！`
+                          : `🎉 Challenge over! Got ${correctCount} right\nEarned $${bonusMoney} & -${bonusCarbon} CO₂!`;
+                    } else {
+                        applyCarbonEffect(player, 15);
+                        popupMessage = isZh
+                          ? `💀 挑戰失敗！一題都沒答對\n遭罰增加 15 CO₂ 碳排！`
+                          : `💀 Challenge failed! 0 correct\n+15 CO₂ penalty!`;
+                    }
+                    await showModal(popupTitle, popupMessage, [{ text: isZh ? "確認" : "OK", value: 'ok', cssClass: 'primary' }]);
+                    
+                } else if (randomGame === 'memoryGame.html') {
+                    logInfo(isZh ? "🌟 觸發小遊戲：準備進行「永續記憶卡」配對挑戰！" : "Triggered Game: Prepare for the Memory Match Challenge!");
+                    const randomStageIdx = Math.floor(Math.random() * 4);
+                    const memResult = await triggerMinigame(player, 'memoryGame.html', `&stage=${randomStageIdx}`);
+                    
+                    const matchedPairs = memResult.matched;
+                    const memMoneyBonus = matchedPairs * 20;
+                    const memCarbonReduction = matchedPairs * 5;
+                    
+                    player.money += memMoneyBonus;
+                    applyCarbonEffect(player, -memCarbonReduction);
+                    
+                    let popupTitleMem = isZh ? "🌟 記憶挑戰結算" : "🌟 Memory Challenge Result";
+                    let popupMessageMem = isZh 
+                      ? `🎉 挑戰結束！成功配對 ${matchedPairs} 組\n獲得 $${memMoneyBonus} 並減少 ${memCarbonReduction} CO₂！`
+                      : `🎉 Challenge over! Matched ${matchedPairs} pairs\nEarned $${memMoneyBonus} & -${memCarbonReduction} CO₂!`;
+                    
+                    if (memResult.retention > 0) {
+                       popupMessageMem += isZh ? `\n\n📊 記憶留存度：${memResult.retention} 分` : `\n\n📊 Retention Score: ${memResult.retention}`;
+                    }
+                    await showModal(popupTitleMem, popupMessageMem, [{ text: isZh ? "確認" : "OK", value: 'ok', cssClass: 'primary' }]);
+                    
+                } else if (randomGame === 'catchGame.html') {
+                    logInfo(isZh ? "🍎 觸發小遊戲：準備進行「減碳接接樂」反應挑戰！" : "Triggered Game: Prepare for the Carbon Catcher Challenge!");
+                    const catchResult = await triggerMinigame(player, 'catchGame.html', '');
+                    
+                    const catchScore = catchResult.score || 0;
+                    let popupTitleCatch = isZh ? "🍎 接接樂挑戰結算" : "🍎 Catcher Challenge Result";
+                    let popupMessageCatch = "";
+                    
+                    if (catchScore > 0) {
+                        const catchMoney = catchScore ;
+                        const catchCarbon = catchScore/10 ;
+                        player.money += catchMoney;
+                        applyCarbonEffect(player, -catchCarbon);
+                        popupMessageCatch = isZh
+                          ? `🎉 挑戰結束！成功接住 ${catchScore/10} 個永續物件\n獲得 $${catchMoney} 並減少 ${catchCarbon} CO₂！`
+                          : `🎉 Challenge over! Caught ${catchScore} items\nEarned $${catchMoney} & -${catchCarbon} CO₂!`;
+                    } else {
+                        applyCarbonEffect(player, 15);
+                        popupMessageCatch = isZh
+                          ? `💀 挑戰失敗！一個永續物件都沒接住\n遭罰增加 15 CO₂ 碳排！`
+                          : `💀 Challenge failed! Caught 0 items\n+15 CO₂ penalty!`;
+                    }
+                    await showModal(popupTitleCatch, popupMessageCatch, [{ text: isZh ? "確認" : "OK", value: 'ok', cssClass: 'primary' }]);
                 }
-                await showModal(popupTitleMem, popupMessageMem, [{ text: isZh ? "確認" : "OK", value: 'ok', cssClass: 'primary' }]);
-                
-            } else if (randomGame === 'catchGame.html') {
-                logInfo(isZh ? "🍎 觸發小遊戲：準備進行「減碳接接樂」反應挑戰！" : "Triggered Game: Prepare for the Carbon Catcher Challenge!");
-                const catchResult = await triggerMinigame(player, 'catchGame.html', '');
-                
-                const catchScore = catchResult.score || 0;
-                let popupTitleCatch = isZh ? "🍎 接接樂挑戰結算" : "🍎 Catcher Challenge Result";
-                let popupMessageCatch = "";
-                
-                if (catchScore > 0) {
-                    const catchMoney = catchScore ;
-                    const catchCarbon = catchScore/10 ;
-                    player.money += catchMoney;
-                    applyCarbonEffect(player, -catchCarbon);
-                    logInfo(isZh ? `🎉 挑戰結束！成功接住 ${catchScore/10} 個永續物件，獲得 $${catchMoney} 並減少 ${catchCarbon} CO₂！` : `Challenge over! Caught ${catchScore} items. Earned $${catchMoney} & -${catchCarbon} CO₂!`);
-                    popupMessageCatch = isZh
-                      ? `🎉 挑戰結束！成功接住 ${catchScore/10} 個永續物件\n獲得 $${catchMoney} 並減少 ${catchCarbon} CO₂！\n(碳排變更: -${catchCarbon} CO₂)`
-                      : `🎉 Challenge over! Caught ${catchScore} items\nEarned $${catchMoney} & -${catchCarbon} CO₂!\n(Carbon change: -${catchCarbon} CO₂)`;
-                } else {
-                    applyCarbonEffect(player, 15);
-                    logInfo(isZh ? "💀 挑戰失敗！一個永續物件都沒接住，遭罰增加 15 CO₂ 碳排！" : "Challenge failed! Caught 0 items, +15 CO₂ penalty!");
-                    popupMessageCatch = isZh
-                      ? `💀 挑戰失敗！一個永續物件都沒接住\n遭罰增加 15 CO₂ 碳排！\n(碳排變更: +15 CO₂)`
-                      : `💀 Challenge failed! Caught 0 items\n+15 CO₂ penalty!\n(Carbon change: +15 CO₂)`;
-                }
-                await showModal(popupTitleCatch, popupMessageCatch, [{ text: isZh ? "確認" : "OK", value: 'ok', cssClass: 'primary' }]);
             }
             updateUI();
             return;
@@ -841,22 +734,30 @@
             const ownerId = properties[cell.id];
             if (ownerId === undefined) {
               if (player.money >= cell.cost) {
-                logInfo(currentLang === 'zh' ? `請回答問題以獲取購買權！` : `Answer quiz to buy!`);
-                if (await askQuiz(player)) {
-                  const decision = await showModal(
-                    currentLang === 'zh' ? "🏠 購買地產？" : "🏠 Buy Property?",
-                    currentLang === 'zh' ? `購買 [${cell.name}]\n價格: $${cell.cost}\n碳排: +${cell.carbonEffect} CO₂\n\n你要購買嗎？` : `Buy [${cell.nameEn}]\nPrice: $${cell.cost}\nCarbon: +${cell.carbonEffect} CO₂\n\nBuy?`,
-                    [{ text: currentLang === 'zh' ? `購買` : `Buy`, value: 'buy', cssClass: 'primary' }, { text: currentLang === 'zh' ? "放棄" : "Skip", value: 'pass' }]
-                  );
-                  if (decision === 'buy') {
-                    player.money -= cell.cost;
-                    applyCarbonEffect(player, cell.carbonEffect);
-                    properties[cell.id] = player.id;
-                    document.getElementById(`cell-${cell.id}`).classList.add('owner-' + player.id);
-                    logInfo(currentLang === 'zh' ? `購買成功！` : `Bought successfully!`);
+                if (isAI) {
+                  player.money -= cell.cost;
+                  applyCarbonEffect(player, cell.carbonEffect);
+                  properties[cell.id] = player.id;
+                  document.getElementById(`cell-${cell.id}`).classList.add('owner-' + player.id);
+                  logInfo(currentLang === 'zh' ? `🤖 宏全直接購買了 [${cell.name}]！` : `🤖 AI bought [${cell.nameEn}].`);
+                } else {
+                  logInfo(currentLang === 'zh' ? `請回答問題以獲取購買權！` : `Answer quiz to buy!`);
+                  if (await askQuiz(player)) {
+                    const decision = await showModal(
+                      currentLang === 'zh' ? "🏠 購買地產？" : "🏠 Buy Property?",
+                      currentLang === 'zh' ? `購買 [${cell.name}]\n價格: $${cell.cost}\n碳排: +${cell.carbonEffect} CO₂\n\n你要購買嗎？` : `Buy [${cell.nameEn}]\nPrice: $${cell.cost}\nCarbon: +${cell.carbonEffect} CO₂\n\nBuy?`,
+                      [{ text: currentLang === 'zh' ? `購買` : `Buy`, value: 'buy', cssClass: 'primary' }, { text: currentLang === 'zh' ? "放棄" : "Skip", value: 'pass' }]
+                    );
+                    if (decision === 'buy') {
+                      player.money -= cell.cost;
+                      applyCarbonEffect(player, cell.carbonEffect);
+                      properties[cell.id] = player.id;
+                      document.getElementById(`cell-${cell.id}`).classList.add('owner-' + player.id);
+                      logInfo(currentLang === 'zh' ? `購買成功！` : `Bought successfully!`);
+                    }
                   }
                 }
-              } else { logInfo(currentLang === 'zh' ? `金錢不足無法購買。` : `Not enough money.`); }
+              } else { logInfo(currentLang === 'zh' ? `${pName} 金錢不足無法購買。` : `Not enough money.`); }
             } else if (ownerId !== player.id) {
               let rent = cell.rent;
               if (cell.group === 'public') {
@@ -865,21 +766,22 @@
               }
               player.money -= rent;
               players[ownerId].money += rent;
-              logInfo(currentLang === 'zh' ? `支付租金 $${rent} 給 玩家 ${ownerId + 1}` : `Paid $${rent} rent to Player ${ownerId + 1}`);
+              const targetName = (ownerId === 1) ? "宏全" : "玩家 1";
+              logInfo(currentLang === 'zh' ? `${pName} 支付租金 $${rent} 給 ${targetName}` : `Paid $${rent} rent.`);
             }
             break;
           case 'tax':
             player.money += cell.moneyEffect;
-            logInfo(currentLang === 'zh' ? `支付稅金 $${Math.abs(cell.moneyEffect)}` : `Paid tax $${Math.abs(cell.moneyEffect)}`);
+            logInfo(currentLang === 'zh' ? `${pName} 支付稅金 $${Math.abs(cell.moneyEffect)}` : `Paid tax $${Math.abs(cell.moneyEffect)}`);
             break;
           case 'free':
             applyCarbonEffect(player, -20);
-            logInfo(currentLang === 'zh' ? "抵達碳匯中心，抵銷 20 CO₂！" : "At Carbon Sink! -20 CO₂");
+            logInfo(currentLang === 'zh' ? `${pName} 抵達碳匯中心，抵銷 20 CO₂！` : `At Carbon Sink! -20 CO₂`);
             break;
           case 'goToJail':
             player.position = JAIL_POSITION; player.isInJail = true;
             movePlayerToken(player.id, player.position);
-            logInfo(currentLang === 'zh' ? "重大污染！被送往環評審查！" : "Major Pollution! Go to EIA!");
+            logInfo(currentLang === 'zh' ? `${pName} 重大污染！被送往環評審查！` : `Major Pollution! Go to EIA!`);
             break;
         }
         updateUI();
@@ -900,7 +802,7 @@
             if (isZh) {
                 if (cell.type === 'property' || cell.type === 'nature') {
                     const owner = properties[cell.id];
-                    const ownerText = owner !== undefined ? `玩家 ${owner + 1}` : "無 (可購買)";
+                    const ownerText = owner !== undefined ? (owner === 1 ? "宏全" : "玩家 1") : "無 (可購買)";
                     desc = `<b>💰 購買價格:</b> $${cell.cost}<br>` +
                            `<b>💵 基礎租金:</b> $${cell.rent}<br>` +
                            `<b>🏭 碳排影響:</b> +${cell.carbonEffect} CO₂<br>` +
@@ -908,22 +810,22 @@
                 } else if (cell.type === 'tax') {
                     desc = `<b>💸 稅金金額:</b> $${Math.abs(cell.moneyEffect)}<br>路過或停留在這格的玩家需要繳納碳稅/奢侈稅。`;
                 } else if (cell.type === 'chance') {
-                    desc = `<b>🎯 機會格子:</b><br>停留在此將隨機觸發「塑戰速決」、「永續記憶卡」或「減碳接接樂」其中一款永續挑戰挑戰！`;
+                    desc = `<b>🎯 機會格子:</b><br>玩家停留在此將隨機觸發永續挑戰小遊戲；宏全停留在此則隨機加減金錢與碳排。`;
                 } else if (cell.type === 'fate') {
-                    desc = `<b>🌟 命運格子:</b><br>停留在此將隨機觸發「塑戰速決」、「永續記憶卡"]或「減碳接接樂}其中一款永續挑戰挑戰！`;
+                    desc = `<b>🌟 命運格子:</b><br>玩家停留在此將隨機觸發永續挑戰小遊戲；宏全停留在此則隨機加減金錢與碳排。`;
                 } else if (cell.type === 'jail') {
-                    desc = `<b>⛓ 環評審查 (監獄):</b><br>被拘留在此的玩家，需要支付罰款 $50 並且回答正確環保問題才能離開。`;
+                    desc = `<b>⛓ 環評審查 (監獄):</b><br>被拘留在此的玩家，需要支付罰款 $50 並且回答正確環保問題才能離開。宏全會自動繳費。`;
                 } else if (cell.type === 'goToJail') {
                     desc = `<b>💀 重大污染 (送往環評):</b><br>踩到此格代表造成重大環境污染，將直接被強制送往「環評審查」關監獄！`;
                 } else if (cell.type === 'free') {
                     desc = `<b>🌳 碳匯中心:</b><br>永續發展的避風港！在此休息可以直接抵銷 20 CO₂ 碳排放量。`;
                 } else if (cell.type === 'go') {
-                    desc = `<b>🏁 起點格:</b><br>每當玩家完整繞完棋盤一圈並經過此格，均可固定領取 $200 的永續營運金。`;
+                    desc = `<b>🏁 起點格:</b><br>每當完整繞完棋盤一圈並經過此格，均可固定領取 $200 的永續營運金。`;
                 }
             } else {
                 if (cell.type === 'property' || cell.type === 'nature') {
                     const owner = properties[cell.id];
-                    const ownerText = owner !== undefined ? `Player ${owner + 1}` : "None";
+                    const ownerText = owner !== undefined ? (owner === 1 ? "AI" : "Player 1") : "None";
                     desc = `<b>💰 Price:</b> $${cell.cost}<br>` +
                            `<b>Rent:</b> $${cell.rent}<br>` +
                            `<b>Carbon:</b> +${cell.carbonEffect} CO₂<br>` +
@@ -939,9 +841,10 @@
       }
 
       function nextTurn() {
-        document.getElementById(`dice-display-${currentPlayerIndex}`).innerHTML = "";
+        document.getElementById(`dice-display-0`).innerHTML = "";
         currentPlayerIndex = (currentPlayerIndex + 1) % NUM_PLAYERS;
         updateUI(); 
+        checkAndTriggerAI();
       }
 
       function checkGameStatus(player) {
@@ -956,12 +859,14 @@
         const isZh = (currentLang === 'zh');
         let reportHtml = "";
         players.forEach(p => {
+          if (p.id === 1) return; 
+          
           const total = p.stats.totalQuestions;
           const correct = p.stats.correctCount;
           const rate = total === 0 ? 0 : Math.round((correct / total) * 100);
           
           reportHtml += `<div style="text-align:left; border-bottom:1px solid #ccc; padding-bottom:10px; margin-bottom:10px;">`;
-          reportHtml += `<h4><span style="display:inline-block;width:15px;height:15px;background-color:${p.tokenColor};margin-right:8px;vertical-align:middle;border:1px solid #ccc;"></span>${isZh ? '玩家' : 'Player'} ${p.id + 1}</h4>`;
+          reportHtml += `<h4><span style="display:inline-block;width:15px;height:15px;background-color:${p.tokenColor};margin-right:8px;vertical-align:middle;border:1px solid #ccc;"></span>${isZh ? '玩家' : 'Player'} 1</h4>`;
           reportHtml += `<p><b>${isZh ? '正確率' : 'Accuracy'}: ${rate}%</b> (${correct} / ${total})</p>`;
           
           if (p.stats.mistakes.length > 0) {
@@ -1009,11 +914,9 @@
           });
       }
 
-      // 💡 新增：註冊點擊遮罩層（彈窗外部黑底）即自動關閉彈窗的功能
       function setupClickOutsideModalListener() {
           const overlay = document.getElementById('modal-overlay');
           overlay.addEventListener('click', () => {
-              // 透過加入 class 將彈窗與遮罩層同時隱藏
               document.getElementById('modal-overlay').classList.add('modal-hidden');
               document.getElementById('modal').classList.add('modal-hidden');
           });
@@ -1034,7 +937,6 @@
         }
         
         document.getElementById('roll-button-0').addEventListener('click', () => { if (currentPlayerIndex === 0) rollDice(); });
-        document.getElementById('roll-button-1').addEventListener('click', () => { if (currentPlayerIndex === 1) rollDice(); });
         
         document.getElementById('lang-toggle').addEventListener('click', () => applyLanguage(currentLang === 'zh' ? 'en' : 'zh'));
         document.getElementById('report-button').addEventListener('click', showLearningReport);
@@ -1043,7 +945,7 @@
         applyLanguage('zh');
         setupCellClickListeners(); 
         setupFullscreen(); 
-        setupClickOutsideModalListener(); // 💡 啟用點擊外部關閉功能
+        setupClickOutsideModalListener();
         updateUI();
         logInfo("歡迎來到碳權大富翁！請玩家 1 擲骰子開始。");
       }

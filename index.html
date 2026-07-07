@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>碳權大富翁：永續行動力 (PVE版)</title>
+    <title>碳權大富翁：永續行動力 (PVE 策略版)</title>
     <script src="questions.js"></script>
     <style>
         /* 電腦版骰子預設大小 */
@@ -101,7 +101,7 @@
         .player.p-0 { bottom: 5px; left: 5px; }
         .player.p-1 { bottom: 5px; right: 5px; }
         
-        /* 玩家面板專用 CSS (左右分開) */
+        /* 玩家面板專用 CSS */
         .ui-panel { width: 260px; display: flex; flex-direction: column; gap: 15px; transition: opacity 0.3s ease; }
         .ui-widget { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 15px; }
         .turn-indicator { font-size: 20px; font-weight: bold; text-align: center; }
@@ -307,6 +307,7 @@
       const MAX_CARBON = 100;
       const JAIL_FEE = 50;
       const JAIL_POSITION = 9;
+      const AI_CARBON_SAFE_LINE = 75; // 🤖 電腦購入高污染地產的安全碳排警戒線
 
       const players = [];
       let currentPlayerIndex = 0;
@@ -735,12 +736,22 @@
             if (ownerId === undefined) {
               if (player.money >= cell.cost) {
                 if (isAI) {
-                  player.money -= cell.cost;
-                  applyCarbonEffect(player, cell.carbonEffect);
-                  properties[cell.id] = player.id;
-                  document.getElementById(`cell-${cell.id}`).classList.add('owner-' + player.id);
-                  logInfo(currentLang === 'zh' ? `🤖 宏全直接購買了 [${cell.name}]！` : `🤖 AI bought [${cell.nameEn}].`);
+                  // 🤖 修正核心：電腦根據自身碳排評估購買策略
+                  const futureCarbon = player.carbon + cell.carbonEffect;
+                  
+                  // 如果這塊土地是高污染（會增加大於25以上的碳排），且買了會超過安全警戒線（75），電腦會理智拒絕
+                  if (cell.carbonEffect >= 25 && futureCarbon > AI_CARBON_SAFE_LINE) {
+                      logInfo(currentLang === 'zh' ? `🤖 宏全評估自身碳排危險 (${player.carbon} CO₂)，決定理智放棄購買 [${cell.name}]。` : `🤖 AI skipped [${cell.nameEn}] due to high carbon risk.`);
+                  } else {
+                      // 否則（是綠色環保地產，或者目前總碳排還很安全），就直接購入
+                      player.money -= cell.cost;
+                      applyCarbonEffect(player, cell.carbonEffect);
+                      properties[cell.id] = player.id;
+                      document.getElementById(`cell-${cell.id}`).classList.add('owner-' + player.id);
+                      logInfo(currentLang === 'zh' ? `🤖 宏全評估碳排安全，直接購買了 [${cell.name}]！` : `🤖 AI bought [${cell.nameEn}].`);
+                  }
                 } else {
+                  // 玩家 1 維持原本需要回答問題
                   logInfo(currentLang === 'zh' ? `請回答問題以獲取購買權！` : `Answer quiz to buy!`);
                   if (await askQuiz(player)) {
                     const decision = await showModal(
@@ -947,7 +958,7 @@
         setupFullscreen(); 
         setupClickOutsideModalListener();
         updateUI();
-        logInfo("歡迎來到碳權大富翁！請玩家 1 擲骰子開始。");
+        logInfo("歡迎來到碳權大富翁 PVE 模式！請玩家 1 擲骰子開始。");
       }
 
       initGame();
